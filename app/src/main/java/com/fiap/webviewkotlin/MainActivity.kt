@@ -1,52 +1,29 @@
 package com.fiap.webviewkotlin
 
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
-import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 
 
 class MainActivity : AppCompatActivity() {
-
-    private var webView: WebView = TODO()
-    private var progressBar: ProgressBar
-
+    private var webView: WebView? = null
+    private var url: String = "https://www.google.com"
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        if (webView != null) {
-            val webSettings = webView.settings
-            webSettings.javaScriptEnabled = true
-
-            webView.webViewClient = WebViewClient()
-            webView.webChromeClient = WebChromeClient()
-            webView.loadUrl( "http://www.google.com")
-
-            webView.webViewClient = object: WebViewClient() {
-                override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                    progressBar.visibility = View.VISIBLE
-                    super.onPageStarted(view, url, favicon)
-                }
-
-                override fun onPageFinished(view: WebView?, url: String?) {
-                    progressBar.visibility = View.GONE
-                    super.onPageFinished(view, url)
-                }
-            }
-        }
+        webView = findViewById<View>(R.id.webview) as WebView
+        webView!!.webViewClient = WebViewClient()
+        webView!!.loadUrl(url)
+        val webSettings = webView!!.settings
+        webSettings.javaScriptEnabled = true
     }
 
     override fun onBackPressed() {
-        if (webView.canGoBack()) {
-            webView.goBack()
-        }
-        else {
+        if (webView!!.canGoBack()) {
+            webView!!.goBack()
+        } else {
             super.onBackPressed()
         }
     }
